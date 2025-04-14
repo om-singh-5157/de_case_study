@@ -1,0 +1,89 @@
+-- Table: Admin
+CREATE TABLE Admin (
+    UserID NUMBER PRIMARY KEY,
+    UserName VARCHAR2(8) UNIQUE NOT NULL
+);
+
+-- Table: Staff
+CREATE TABLE Staff (
+    StaffID NUMBER PRIMARY KEY,
+    FirstName VARCHAR2(10),
+    Surname VARCHAR2(10),
+    Designation VARCHAR2(20)
+);
+
+-- Table: Doctor
+CREATE TABLE Doctor (
+    DoctorID NUMBER PRIMARY KEY,
+    DoctorName VARCHAR2(10),
+    Specialization VARCHAR2(12),
+    StaffID NUMBER REFERENCES Staff(StaffID)
+);
+
+-- Table: Out Patient
+CREATE TABLE OutPatient (
+    PatientID NUMBER PRIMARY KEY,
+    PatientName VARCHAR2(12)
+);
+
+-- Table: Out Patient Medical Info
+CREATE TABLE OutPatientMedical (
+    OutPatientMedID NUMBER PRIMARY KEY,
+    PatientID NUMBER REFERENCES OutPatient(PatientID),
+    MedicineName VARCHAR2(12)
+);
+
+-- Table: In Patient
+CREATE TABLE InPatient (
+    AdmissionID NUMBER PRIMARY KEY,
+    PatientName VARCHAR2(12),
+    Gender VARCHAR2(8),
+    AdmissionDate DATE
+);
+
+-- Table: Room
+CREATE TABLE Room (
+    RoomID NUMBER PRIMARY KEY,
+    RoomNo VARCHAR2(8) UNIQUE NOT NULL,
+    RoomCost NUMBER,
+    AdmissionID NUMBER REFERENCES InPatient(AdmissionID)
+);
+
+-- Table: In Patient Medical
+CREATE TABLE InPatientMedical (
+    InPatientMedID NUMBER PRIMARY KEY,
+    AdmissionID NUMBER REFERENCES InPatient(AdmissionID),
+    DoctorID NUMBER REFERENCES Doctor(DoctorID),
+    MedicineID NUMBER
+);
+
+-- Table: In Patient Service
+CREATE TABLE InPatientService (
+    AdmissionID NUMBER REFERENCES InPatient(AdmissionID),
+    ServiceName VARCHAR2(20),
+    PRIMARY KEY (AdmissionID, ServiceName)
+);
+
+-- Table: Cashier
+CREATE TABLE Cashier (
+    StaffID NUMBER NOT NULL REFERENCES Staff(StaffID),
+    FirstName VARCHAR2(10),
+    Designation VARCHAR2(20),
+    PRIMARY KEY (StaffID)
+);
+
+
+-- Table: In Patient Bill
+CREATE TABLE InPatientBill (
+    PaymentID NUMBER PRIMARY KEY,
+    AdmissionID NUMBER REFERENCES InPatient(AdmissionID),
+    Total NUMBER
+);
+
+-- Table: Out Patient Bill
+CREATE TABLE OutPatientBill (
+ PatientID NUMBER REFERENCES OutPatient(PatientID),
+    AdmissionID NUMBER REFERENCES InPatient(AdmissionID),
+    Total NUMBER,
+    PRIMARY KEY (PatientID, AdmissionID) -- Composite Primary Key
+);
