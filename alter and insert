@@ -1,0 +1,92 @@
+ALTER TABLE Staff ADD AdminID NUMBER;
+ALTER TABLE Staff ADD CONSTRAINT fk_admin_staff FOREIGN KEY (AdminID) REFERENCES Admin(UserID);
+
+ALTER TABLE Doctor ADD AdminID NUMBER;
+ALTER TABLE Doctor ADD CONSTRAINT fk_admin_doctor FOREIGN KEY (AdminID) REFERENCES Admin(UserID);
+
+-- Relationship: Doctor attends to Patients
+
+--ALTER TABLE InPatientMedical ADD CONSTRAINT fk_doctor_patient FOREIGN KEY (DoctorID) REFERENCES Doctor(DoctorID);
+-- Insert into Admin
+INSERT INTO Admin (UserID, UserName) VALUES (1, 'admin1');
+INSERT INTO Admin (UserID, UserName) VALUES (2, 'admin2');
+INSERT INTO Admin (UserID, UserName) VALUES (3, 'admin3');
+INSERT INTO Admin (UserID, UserName) VALUES (4, 'admin4');
+
+-- Insert into Staff
+INSERT INTO Staff (StaffID, FirstName, Surname, Designation) VALUES (101, 'Harsh', 'Singh', 'Pharmacist');
+INSERT INTO Staff (StaffID, FirstName, Surname, Designation) VALUES (102, 'Abhipsa', 'Sahu', 'Technician');
+INSERT INTO Staff (StaffID, FirstName, Surname, Designation) VALUES (103, 'Ayan', 'Sinha', 'Receptionist');
+INSERT INTO Staff (StaffID, FirstName, Surname, Designation) VALUES (104, 'Abhipsa', 'Mohapatra', 'Nurse');
+INSERT INTO Staff (StaffID, FirstName, Surname, Designation) VALUES (105, 'Nazis', 'Fardeen', 'Assistant');
+
+-- Insert into Doctor
+INSERT INTO Doctor (DoctorID, DoctorName, Specialization, StaffID) VALUES (201, 'Dr.Mukesh', 'Cardiology', 101);
+INSERT INTO Doctor (DoctorID, DoctorName, Specialization, StaffID) VALUES (202, 'Dr.Patel', 'Neurology', 102);
+INSERT INTO Doctor (DoctorID, DoctorName, Specialization, StaffID) VALUES (203, 'Dr.Mishra', 'Orthopedics', 103);
+INSERT INTO Doctor (DoctorID, DoctorName, Specialization, StaffID) VALUES (204, 'Dr.Kim', 'Pediatrics', 104);
+
+-- Insert into OutPatient
+INSERT INTO OutPatient (PatientID, PatientName) VALUES (301, 'Sonu Singh');
+INSERT INTO OutPatient (PatientID, PatientName) VALUES (302, 'Om Singh');
+INSERT INTO OutPatient (PatientID, PatientName) VALUES (303, 'Nidhi Singh');
+INSERT INTO OutPatient (PatientID, PatientName) VALUES (304, 'Alka Kumari');
+
+-- Insert into OutPatientMedical
+INSERT INTO OutPatientMedical (OutPatientMedID, PatientID, MedicineName) VALUES (401, 301, 'Paracetamol');
+INSERT INTO OutPatientMedical (OutPatientMedID, PatientID, MedicineName) VALUES (402, 302, 'Ibuprofen');
+INSERT INTO OutPatientMedical (OutPatientMedID, PatientID, MedicineName) VALUES (403, 303, 'Antibiotic');
+INSERT INTO OutPatientMedical (OutPatientMedID, PatientID, MedicineName) VALUES (404, 304, 'Vitamin D');
+
+-- Insert into InPatient
+INSERT INTO InPatient (AdmissionID, PatientName, Gender, AdmissionDate) VALUES (501, 'Krish Kumar', 'Female', TO_DATE('2025-03-20', 'YYYY-MM-DD'));
+INSERT INTO InPatient (AdmissionID, PatientName, Gender, AdmissionDate) VALUES (502, 'Dhruv Gope', 'Male', TO_DATE('2025-03-18', 'YYYY-MM-DD'));
+INSERT INTO InPatient (AdmissionID, PatientName, Gender, AdmissionDate) VALUES (503, 'Ritu Kumar', 'Trans', TO_DATE('2025-03-19', 'YYYY-MM-DD'));
+INSERT INTO InPatient (AdmissionID, PatientName, Gender, AdmissionDate) VALUES (504, 'Ram Sarangi', 'Male', TO_DATE('2025-03-17', 'YYYY-MM-DD'));
+
+-- Insert into Room
+INSERT INTO Room (RoomID, RoomNo, RoomCost, AdmissionID) VALUES (601, '101A', 500, 501);
+INSERT INTO Room (RoomID, RoomNo, RoomCost, AdmissionID) VALUES (602, '102B', 600, 502);
+INSERT INTO Room (RoomID, RoomNo, RoomCost, AdmissionID) VALUES (603, '103C', 700, 503);
+INSERT INTO Room (RoomID, RoomNo, RoomCost, AdmissionID) VALUES (604, '104D', 800, 504);
+
+-- Insert into InPatientMedical
+INSERT INTO InPatientMedical (InPatientMedID, AdmissionID, DoctorID, MedicineID) VALUES (701, 501, 201, 1);
+INSERT INTO InPatientMedical (InPatientMedID, AdmissionID, DoctorID, MedicineID) VALUES (702, 502, 202, 2);
+INSERT INTO InPatientMedical (InPatientMedID, AdmissionID, DoctorID, MedicineID) VALUES (703, 503, 203, 3);
+INSERT INTO InPatientMedical (InPatientMedID, AdmissionID, DoctorID, MedicineID) VALUES (704, 504, 204, 4);
+
+-- Insert into InPatientService
+INSERT INTO InPatientService (AdmissionID, ServiceName) VALUES (501, 'Surgery');
+INSERT INTO InPatientService (AdmissionID, ServiceName) VALUES (502, 'Physical Therapy');
+INSERT INTO InPatientService (AdmissionID, ServiceName) VALUES (503, 'ICU Monitoring');
+INSERT INTO InPatientService (AdmissionID, ServiceName) VALUES (504, 'Blood Transfusion');
+
+-- Insert into Staff (if not already inserted)
+INSERT INTO Staff (StaffID, FirstName, Surname, Designation) VALUES (801, 'Sudhir', 'Kumar', 'Billing Manager');
+INSERT INTO Staff (StaffID, FirstName, Surname, Designation) VALUES (802, 'Rajesh', 'Singh', 'Accounts Assistant');
+INSERT INTO Staff (StaffID, FirstName, Surname, Designation) VALUES (803, 'Ravindra', 'Murmu', 'Senior Cashier');
+INSERT INTO Staff (StaffID, FirstName, Surname, Designation) VALUES (804, 'Nidhi', 'Kumari', 'Junior Cashier');
+
+-- Now insert into Cashier
+INSERT INTO Cashier (StaffID, FirstName, Designation) VALUES (801, 'Sudhir', 'Billing Manager');
+INSERT INTO Cashier (StaffID, FirstName, Designation) VALUES (802, 'Rajesh', 'Accounts Assistant');
+INSERT INTO Cashier (StaffID, FirstName, Designation) VALUES (803, 'Ravindra', 'Senior Cashier');
+INSERT INTO Cashier (StaffID, FirstName, Designation) VALUES (804, 'Nidhi', 'Junior Cashier');
+
+
+
+
+-- Insert into InPatientBill
+INSERT INTO InPatientBill (PaymentID, AdmissionID, Total) VALUES (901, 501, 1500);
+INSERT INTO InPatientBill (PaymentID, AdmissionID, Total) VALUES (902, 502, 2500);
+INSERT INTO InPatientBill (PaymentID, AdmissionID, Total) VALUES (903, 503, 3500);
+INSERT INTO InPatientBill (PaymentID, AdmissionID, Total) VALUES (904, 504, 4500);
+
+-- Insert into OutPatientBill
+INSERT INTO OutPatientBill (PatientID, AdmissionID, Total) VALUES (301, 501, 200);
+INSERT INTO OutPatientBill (PatientID, AdmissionID, Total) VALUES (302, 502, 300);
+INSERT INTO OutPatientBill (PatientID, AdmissionID, Total) VALUES (303, 503, 400);
+INSERT INTO OutPatientBill (PatientID, AdmissionID, Total) VALUES (304, 504, 500);
+
+COMMIT;
